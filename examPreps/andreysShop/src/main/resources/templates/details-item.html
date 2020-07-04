@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/head :: head('Andrey\'s')"></head>
+<body>
+        <header >
+            <nav th:replace="fragments/menu :: menu"></nav>
+        </header>
+    <main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Details</span></h1>
+    <hr class="my-3"/>
+    <div class="container-fluid bg-dark w-25 m-auto ">
+        <div class="row justify-content-center ">
+            <div th:object="${item}" class="card" style="width: 18rem;">
+                <img class="card-img-top" th:src="${item.imgSrc}" alt="Card image cap">
+                <div class="card-body bg-gray align-content-center text-center">
+                    <h6 th:text="${item.name}">Item name</h6>
+                    <p th:text="${item.description}" class="card-text">Item Description</p>
+                    <h6 th:text="${item.price}">Price</h6>
+                    <a th:href="@{/items/delete/{id}(id=${item.id})}" class="btn btn-danger" >Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+    <footer th:include="fragments/foot :: foot"></footer>
+
+</body>
+</html>
