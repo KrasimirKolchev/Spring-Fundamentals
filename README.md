@@ -4,10 +4,10 @@ Spring Fundamental course: (https://softuni.bg/trainings/2844/spring-fundamental
 <br/>
 [SoftUni Certificate]()
 <br/>
-  * Labs on:(https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/westcoastdealershop)
-  * Workshops(https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/judgever2)
+  * [Labs](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/westcoastdealershop)
+  * [Workshops](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/judgever2)
 
-  * [ExamPrep](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/examPreps)
+  * [ExamPreps](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/examPreps)
   * [Exam](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/exam)
 
   
