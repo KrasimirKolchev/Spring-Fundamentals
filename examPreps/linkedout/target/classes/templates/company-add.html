@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{fragments/head}"></head>
+<body>
+
+<header>
+    <nav th:include="~{fragments/menu}" class="navbar navbar-expand-lg navbar-toggler bg-dark"></nav>
+</header>
+<div class="row">
+    <div class="col-md-2"></div>
+    <main class="jumbotron text-center rounded col-md-8 align-self-center">
+        <div class="justify-content-center">
+            <h1>Add Company</h1>
+        </div>
+        <form th:object="${companyAddBindingModel}" th:action="@{/companies/add}" th:method="POST" class="m-md-auto w-50 text-center">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input th:field="*{name}" type="text" class="form-control text-center" id="name" aria-describedby="nameHelp"
+				name="name"/>
+                <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">Error message</small>
+                <small th:if="${companyFound}" class="text-danger">Company already exist!</small>
+            </div>
+
+            <div class="form-group">
+                <label for="town">Town</label>
+                <input th:field="*{town}" type="text" class="form-control text-center" id="town" aria-describedby="town"
+				name="town"/>
+                <small th:if="${#fields.hasErrors('town')}" th:errors="*{town}" class="text-danger">Error message</small>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input th:field="*{description}" type="text" class="form-control text-center" id="description" aria-describedby="description" name="description"/>
+                <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">Error message</small>
+            </div>
+
+            <div class="form-group">
+                <label for="budget">Budget</label>
+                <input th:field="*{budget}" type="number" min="0" class="form-control text-center" id="budget" aria-describedby="town" name="town"/>
+                <small th:if="${#fields.hasErrors('budget')}" th:errors="*{budget}" class="text-danger">Budget</small>
+            </div>
+
+            <button type="submit" class="btn btn-secondary">Add Company</button>
+        </form>
+    </main>
+</div>
+
+<footer th:include="~{fragments/foot}" id="footer"></footer>
+</body>
+</html>
