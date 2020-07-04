@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{fragments/head}"></head>
+<body>
+<header>
+    <nav th:include="~{fragments/menu}" class="navbar navbar-expand-lg navbar-toggler bg-dark"></nav>
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <main class="jumbotron text-center rounded col-md-12 align-self-center">
+                <div class="justify-content-center">
+                    <h1>Employee Details</h1>
+                </div>
+                <div class="row">
+                    <div th:object="${employee}" class="col-md-6 bg-dark">
+                        <h2>Employee</h2>
+                        <h4 th:text="|First Name: *{firstName}|">First Name: {firstName}</h4>
+                        <h4 th:text="|Last Name: *{lastName}|">Last Name: {lastName}</h4>
+                        <h4 th:text="|Education Level: *{educationLevel.displayValue}|">Education Level: {educationLevel}</h4>
+                        <h4 th:text="|Job title: *{jobTitle}|">Job title: {jobTitle}</h4>
+                        <h4 th:text="|Birth date: *{birthDate}|">Birth date: {birthDate}</h4>
+                        <h4 th:text="|Salary: *{salary}| + '$'">Salary: {salary in format 10$}</h4>
+                        <h4 th:text="|Company: *{company.name}|">Company: {company name}</h4>
+                        <div class="align-bottom">
+						<a class="btn btn-danger align-bottom"
+                           th:href="@{/employees/delete/{id}(id=${employee.id})}">Delete employee</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 bg-dark"><img src="/pic/employee.png" height="350px"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+</main>
+<footer th:include="~{fragments/foot}" id="footer"></footer>
+</body>
+</html>
