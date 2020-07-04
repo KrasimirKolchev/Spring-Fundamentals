@@ -4,8 +4,8 @@ Spring Fundamental course: (https://softuni.bg/trainings/2844/spring-fundamental
 <br/>
 [SoftUni Certificate]()
 <br/>
-  * Stacks and Queuse: <span> [Lab](https://github.com/KrasimirKolchev/Java-Advanced/tree/master/StackAndQueue) <span/><span> [Exercises](https://github.com/KrasimirKolchev/Java-Advanced/tree/master/StackAndQueueEx) <span/>
-  * Multidimentional arrays: <span> [Lab](https://github.com/KrasimirKolchev/Java-Advanced/tree/master/MultidimentionalArrays) <span/><span> [Exercises](https://github.com/KrasimirKolchev/Java-Advanced/tree/master/MultidimentionalArraysEx) <span/>
+  * Labs on:(https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/westcoastdealershop)
+  * Workshops(https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/judgever2)
 
   * [ExamPrep](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/examPreps)
   * [Exam](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/exam)
