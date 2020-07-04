@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{fragments/head}">
+
+</head>
+<body>
+<header>
+    <nav th:include="~{/fragments/menu}" class="navbar navbar-expand-lg navbar-light bg-dark"></nav>
+
+</header>
+<main>
+    <div class="container">
+        <h1 >Welcome to Victorious Arena</h1>
+        <hr class="my-3"/>
+        <p class="h4">The most furious arena on the web</p>
+        <p class="h4">You will find many strong enemies but only the best will survive</p>
+        <hr class="my-3"/>
+        <h3><a href="/users/login"> if you have an account or</a>
+            <a href="/users/register"> now and meet the greatest heroes of all time.</a>
+        </h3>
+    </div>
+</main>
+<footer th:include="~{/fragments/footer}" class="footer bg-dark  py-2"></footer>
+</body>
+</html>
