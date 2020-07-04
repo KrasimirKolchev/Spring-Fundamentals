@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: head('Auto dealer shop: Brand add')"></head>
+<body>
+<main class="main">
+    <div th:include="fragments/menu :: menu"></div>
+    <div class="container-fluid">
+        <h2 class="text-center text-white">Add Brand</h2>
+        <form class="mt-lg-5 w-15 h-50" th:object="${brandAddBindingModel}" th:action="@{/brands/add}" th:method="POST">
+            <div class="col col-md-12">
+                <div class="form-group">
+                    <div class="label-holder d-flex justify-content-center">
+                        <label class="text-center text-white font-weight-bold" for="year">Enter Brand Name
+                            <input type="text" class="form-control" placeholder="Brand name" name="name" id="name">
+                                <p th:if="${#fields.errors('name')}" th:errors="*{name}" class="errors alert alert-danger"></p>
+                            <!--/*@thymesVar id="errors" type="String"*/-->
+                            <th:block th:if="${Found}" >
+                                <p class="errors alert alert-danger" >Brand already exist!</p>
+                            </th:block>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-4"></div>
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex justify-content-center">
+                        <input type="submit" class="btn btn-secondary" value="Add Brand"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+<div th:include="fragments/footer :: foot"></div>
+</body>
+</html>

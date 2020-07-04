@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: head('Auto dealer shop: Brands')"></head>
+
+<body>
+
+   <div>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="/"><img src="/img/car.png" class="logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div th:include="fragments/menu :: menu"></div>
+    </nav>
+	</div>
+
+    <div class="container">
+        <h2 class="text-center text-white m-3">All Brands</h2>
+        <div class='row mb-4 d-flex justify-content-around'>
+            <div th:each="brand : ${brands}" class="brand-section col-md-5 mr-auto d-flex flex-column">
+                <h2>Car brand:
+                    <span th:text="*{brand.name}"></span>
+                </h2>
+                <div>Models:
+                    <table>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Start Year</th>
+                            <th>End Year</th>
+                            <th>Picture</th>
+                        </tr>
+                        <tr th:each="model, modelStat : ${brand.models}">
+                            <th th:text="${modelStat.index + 1}">No</th>
+                            <th th:text="*{model.name}">Model Name</th>
+                            <th th:text="*{model.category.displayValue}">Model Category</th>
+                            <th th:text="*{model.startYear}">Model Start Year</th>
+                            <th th:text="*{model.endYear}">Model End Year</th>
+                            <th><img th:src="*{model.imageUrl}" class="img-thumbnail rounded"></th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+   
+	<div>
+        <div th:include="fragments/footer :: foot"></div>
+	</div>
+
+</body>
+</html>

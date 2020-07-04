@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: head('Auto dealer shop: Model add')"></head>
+<body>
+<main class="main">
+    <div th:include="fragments/menu :: menu"></div>
+    <div class="container-fluid">
+        <h2 class="text-center text-white">Add Model</h2>
+        <form class="mt-lg-5 w-15 h-50" th:object="${modelAddBindingModel}" th:action="@{/models/add}" th:method="POST">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="brand">Select Brand
+                                <select id="brand" name="brand" class="form-control">
+                                    <option value="">Select Brand</option>
+                                    <option th:each="b : ${brands}" th:value="${b.getName()}" th:text="${b.getName()}"></option>
+                                </select>
+                                <th:block th:if="${#fields.hasErrors('brand')}" >
+                                    <p th:errors="*{brand}" class="errors alert alert-danger"></p>
+                                </th:block>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="category">Select Category
+                                <select id="category" name="category" class="form-control">
+                                    <option value="">Select Category</option>
+                                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c.displayValue}"></option>
+                                </select>
+                                <th:block th:if="${#fields.hasErrors('category')}" >
+                                    <p th:errors="*{category}" class="errors alert alert-danger"></p>
+                                </th:block>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="name">Enter Model Name
+                                <input th:field="*{name}" type="text" class="form-control" placeholder="Model name" name="name" id="name">
+                                <th:block th:if="${#fields.hasErrors('name')}" >
+                                    <p th:errors="*{name}" class="errors alert alert-danger"></p>
+                                </th:block>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="name">Enter Start year
+                                <input th:field="*{startYear}" type="number" min="1900" max="2099" step="1"
+                                       class="form-control" placeholder="Start year" name="startYear" id="startYear">
+                                <th:block th:if="${#fields.hasErrors('startYear')}" >
+                                    <p th:errors="*{startYear}" class="errors alert alert-danger"></p>
+                                </th:block>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="name">Enter End year
+                                <input th:field="*{endYear}" type="number" min="1900" max="2099" step="1"
+                                       class="form-control" placeholder="End year" name="endYear" id="endYear">
+                                <th:block th:if="${#fields.hasErrors('endYear')}" >
+                                    <p th:errors="*{endYear}" class="errors alert alert-danger"></p>
+                                </th:block>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="form-group">
+                        <div class="label-holder d-flex justify-content-center">
+                            <label class="text-center text-white font-weight-bold" for="name">Enter image URL
+                                <input th:field="*{imageUrl}" type="text" class="form-control" placeholder="Image url" name="imageUrl" id="imageUrl">
+                                <th:block th:if="${#fields.hasErrors('imageUrl')}" >
+                                    <p class="errors alert alert-danger" th:errors="*{imageUrl}"></p>
+                                </th:block>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4"></div>
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex justify-content-center">
+                        <input type="submit" class="btn btn-secondary" value="Add Model"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+<div th:include="fragments/footer :: foot"></div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: head('Auto dealer shop: Home')"></head>
+
+<body>
+<main class="main">
+    <div th:include="fragments/menu :: menu"></div>
+        <div class="container-fluid">
+            <h2 class="text-center text-white ">West Compass Dealer Shop</h2>
+            <hr style="width: 50%"/>
+            <h4 class="font-italic text-center text-white ">
+                 By clicking the buttons below you can check our car deals or upload a
+                 brand new.
+             </h4>
+            <br/>
+            <div class="text-center">
+<!--                 <a class="btn btn-secondary text-center mr-4" href="/offers/add">Upload Offer</a>-->
+                <a class="btn btn-secondary text-center ml-4" href="/offers/all">All Offers</a>
+        </div>
+    </div>
+</main>
+<div th:include="fragments/footer :: foot"></div>
+</body>
+</html>

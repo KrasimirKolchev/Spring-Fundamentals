@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/header :: head('Auto dealer shop: Add Offer')"></head>
+
+<body>
+    
+	<div>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="/"><img src="/img/car.png" class="logo"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div th:include="fragments/menu :: menu"></div>
+    </nav>
+	</div>
+
+
+    <div class="container">
+        <h2 class="text-center text-white">Upload Offer</h2>
+        <form th:object="${offerAddBindingModel}" th:action="@{/offers/add}" th:method="POST"
+              class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-white font-weight-bold" for="condition">Vehicle Condition</label>
+                    <select id="condition" name="condition" class="form-control">
+                        <option value="">- Vehicle Condition -</option>
+                        <option th:each="c : ${condition}" th:value="${c}" th:text="${c.displayValue}"></option>
+                    </select>
+                    <th:block th:each="e : ${#fields.errors('condition')}">
+                        <p class="errors alert alert-danger" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="model">Model</label>
+                    <select id="model" name="model" class="form-control">
+                        <option value="">- Select a model -</option>
+                        <optgroup th:each="brand : ${brands}" th:label="|-- ${brand.name} --|" >
+                            <option th:each="brand_model : ${brand.models}" th:value="${brand_model.id}"
+                                    th:text="|   ${brand.name} ${brand_model.name}|"
+                                    th:selected="${offerAddBindingModel.model != null}">
+                                Model
+                            </option>
+                        </optgroup>
+                    </select>
+                    <th:block th:each="e : ${#fields.errors('model')}">
+                        <p class="errors alert alert-danger" th:text="${e}"></p>
+                    </th:block>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
+                    <select  id="engine" name="engine" class="form-control" >
+                        <option value="">- Select engine type -</option>
+                        <option th:each="e : ${engines}" th:value="${e}" th:text="${e.displayValue}"></option>
+                    </select>
+                    <th:block th:each="e : ${#fields.errors('engine')}">
+                        <p class="errors alert alert-danger" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label class="text-center text-white font-weight-bold" for="transmission">Transmission</label>
+                    <select  id="transmission" name="transmission" class="form-control" >
+                        <option value="">- Select transmission type -</option>
+                        <option th:each="t : ${transmissions}" th:value="${t}" th:text="${t.displayValue}"></option>
+                    </select>
+                    <th:block th:each="e : ${#fields.errors('transmission')}">
+                        <p class="errors alert alert-danger" th:text="${e}"></p>
+                    </th:block>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                    <label for="year" class="text-white font-weight-bold">Year</label>
+                    <input id="year" name="year" type="number" min="1900" max="2099" step="1" class="form-control"
+                           placeholder="Manufacturing year" />
+                    <th:block th:each="e : ${#fields.errors('year')}">
+                        <p class="errors alert alert-danger" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group col-md-6 mb-3">
+                    <label for="mileage" class="text-white font-weight-bold">Mileage</label>
+                    <input id="mileage" name="mileage" type="number" min="0" max="900000" step="1000" class="form-control"
+                           placeholder="Mileage in kilometers" />
+                    <th:block th:each="e : ${#fields.errors('mileage')}">
+                        <p class="errors alert alert-danger" th:text="${e}"></p>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="price" class="text-white font-weight-bold">Price</label>
+                <input id="price" name="price" type="number" min="0" step="100" class="form-control" placeholder="Suggested price" />
+                <th:block th:each="e : ${#fields.errors('price')}">
+                    <p class="errors alert alert-danger" th:text="${e}"></p>
+                </th:block>
+            </div>
+            <div class="form-group">
+                <label class="text-white font-weight-bold" for="description">Description</label>
+                <textarea id="description" name="description" type="textarea" class="form-control" rows="3"
+                          placeholder="Description" ></textarea>
+                <th:block th:each="e : ${#fields.errors('description')}">
+                    <p class="errors alert alert-danger" th:text="${e}"></p>
+                </th:block>
+            </div>
+            <div class="form-group">
+                <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>
+                <input id="imageUrl" name="imageUrl" type="url" class="form-control"
+                       placeholder="Put vehicle image URL here"/>
+                <th:block th:each="e : ${#fields.errors('imageUrl')}">
+                    <p class="errors alert alert-danger" th:text="${e}"></p>
+                </th:block>
+            </div>
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="button-holder d-flex">
+                        <input type="submit" class="btn btn-info btn-lg" value="Submit Offer"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <div th:include="fragments/footer :: foot"></div>
+	</div>
+
+</body>
+</html>
