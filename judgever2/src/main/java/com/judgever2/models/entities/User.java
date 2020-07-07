@@ -1,16 +1,23 @@
 package com.judgever2.models.entities;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private String email;
     private String git;
-    private Role role;
+    private Set<Role> authorities;
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
     private List<Comment> comments;
 
     public User() {
@@ -52,13 +59,14 @@ public class User extends BaseEntity {
         this.git = git;
     }
 
-    @ManyToOne
-    public Role getRole() {
-        return role;
+    @Override
+    @OneToMany(fetch = FetchType.EAGER)
+    public Set<Role> getAuthorities() {
+        return authorities;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
     }
 
     @OneToMany(mappedBy = "author")
@@ -68,5 +76,41 @@ public class User extends BaseEntity {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        isAccountNonExpired = accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        isCredentialsNonExpired = credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

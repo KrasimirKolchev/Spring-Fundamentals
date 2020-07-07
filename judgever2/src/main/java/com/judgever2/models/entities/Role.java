@@ -1,27 +1,30 @@
 package com.judgever2.models.entities;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
-public class Role extends BaseEntity {
-    private String name;
+@Table(name = "authorities")
+public class Role extends BaseEntity implements GrantedAuthority {
+    private String authority;
 
     public Role() {
     }
 
     public Role(String name) {
-        this.name = name;
+        this.authority = name;
     }
 
-    @Column(name = "name", unique = true, nullable = false)
-    public String getName() {
-        return name;
+    @Column(name = "authority", unique = true, nullable = false)
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
+
 }

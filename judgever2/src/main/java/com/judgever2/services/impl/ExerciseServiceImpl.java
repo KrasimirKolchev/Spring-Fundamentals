@@ -29,6 +29,11 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
+    public boolean existByExerciseName(String name) {
+        return this.exerciseRepository.existsByName(name);
+    }
+
+    @Override
     public ExerciseServiceModel addExercise(ExerciseServiceModel exerciseServiceModel) {
         this.exerciseRepository.save(this.modelMapper.map(exerciseServiceModel, Exercise.class));
         return exerciseServiceModel;

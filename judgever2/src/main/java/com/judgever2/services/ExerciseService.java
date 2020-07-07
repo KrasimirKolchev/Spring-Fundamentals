@@ -9,6 +9,8 @@ public interface ExerciseService {
 
     Exercise getById(String id);
 
+    boolean existByExerciseName(String name);
+
     ExerciseServiceModel addExercise(ExerciseServiceModel exerciseServiceModel);
 
     List<ExerciseServiceModel> getAllEx();

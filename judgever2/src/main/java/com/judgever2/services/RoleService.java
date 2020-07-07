@@ -1,9 +1,9 @@
 package com.judgever2.services;
 
-import com.judgever2.models.serviceModels.RoleServiceModel;
+import com.judgever2.models.entities.Role;
 
 public interface RoleService {
 
-    RoleServiceModel findByName(String name);
+    Role findByName(String name);
 
 }

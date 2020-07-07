@@ -17,17 +17,17 @@ public class HomeController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String index(HttpSession httpSession, Model model) {
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("studentsCount", this.userService.getStudentsCount());
+        model.addAttribute("averageGrades", this.userService.getAverageGrades());
 
-        if (httpSession.getAttribute("user") != null) {
-            model.addAttribute("studentsCount", this.userService.getStudentsCount());
-            model.addAttribute("averageGrades", this.userService.getAverageGrades());
-
-            return "home";
-        }
-
-        return "index";
+        return "home";
     }
 
+
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
 }

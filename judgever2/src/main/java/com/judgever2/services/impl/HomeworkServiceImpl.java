@@ -1,9 +1,7 @@
 package com.judgever2.services.impl;
 
-import com.judgever2.models.entities.Exercise;
 import com.judgever2.models.entities.Homework;
 import com.judgever2.models.serviceModels.HomeworkServiceModel;
-import com.judgever2.models.viewModels.ExerciseNameViewModel;
 import com.judgever2.repositories.HomeworkRepository;
 import com.judgever2.services.ExerciseService;
 import com.judgever2.services.HomeworkService;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 

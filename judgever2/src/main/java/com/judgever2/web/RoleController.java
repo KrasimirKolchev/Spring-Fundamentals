@@ -7,6 +7,8 @@ import com.judgever2.services.RoleService;
 import com.judgever2.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +37,9 @@ public class RoleController {
     }
 
     @GetMapping("/add")
-    public String rolesAdd(Model model, HttpSession httpSession) {
-        UserServiceModel currentUser = (UserServiceModel) httpSession.getAttribute("user");
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String rolesAdd(@AuthenticationPrincipal Principal principal, Model model) {
+        UserServiceModel currentUser = this.userService.findByUsername(principal.getName());
         model.addAttribute("roleAddBindingModel", new RoleAddBindingModel());
         model.addAttribute("users", this.userService.getAllUsers()
                 .stream()
@@ -46,6 +50,7 @@ public class RoleController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String rolesAddConf(@Valid @ModelAttribute("roleAddBindingModel")
                                        RoleAddBindingModel roleAddBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 

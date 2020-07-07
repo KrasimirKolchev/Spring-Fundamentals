@@ -1,11 +1,15 @@
 package com.judgever2.models.serviceModels;
 
+import com.judgever2.models.entities.Role;
+
+import java.util.Set;
+
 public class UserServiceModel extends BaseServiceModel {
     private String username;
     private String password;
     private String email;
     private String git;
-    private RoleServiceModel role;
+    private Set<Role> authorities;
 
     public UserServiceModel() {
     }
@@ -42,11 +46,11 @@ public class UserServiceModel extends BaseServiceModel {
         this.git = git;
     }
 
-    public RoleServiceModel getRole() {
-        return role;
+    public Set<Role> getAuthorities() {
+        return authorities;
     }
 
-    public void setRole(RoleServiceModel role) {
-        this.role = role;
+    public void setAuthorities(Set<Role> authorities) {
+        this.authorities = authorities;
     }
 }

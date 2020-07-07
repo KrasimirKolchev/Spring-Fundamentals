@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
@@ -45,33 +46,37 @@ public class HomeworkController {
 
     @GetMapping("/add")
     public String addHomework(Model model) {
-        model.addAttribute("homeworkAddBindingModel", new HomeworkAddBindingModel());
-        model.addAttribute("exercises", this.exerciseService.getAllEx());
+        if (!model.containsAttribute("homeworkAddBindingModel")) {
+            model.addAttribute("homeworkAddBindingModel", new HomeworkAddBindingModel());
+            model.addAttribute("exercises", this.exerciseService.getAllEx());
+        }
         return "homework-add";
     }
 
     @PostMapping("/add")
     public String addHomeworkConf(@Valid @ModelAttribute("homeworkAddBindingModel")
-                HomeworkAddBindingModel homeworkAddBindingModel, BindingResult bindingResult,
-                                        HttpSession httpSession, RedirectAttributes redirectAttributes) {
+                HomeworkAddBindingModel homeworkAddBindingModel, BindingResult bindingResult
+                , RedirectAttributes redirectAttributes, Principal principal) {
 
         System.out.println();
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("homeworkAddBindingModel", homeworkAddBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.homeworkAddBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.homeworkAddBindingModel"
+                    , bindingResult);
             return "homework-add";
         } else {
 
             if (checkIfLate(homeworkAddBindingModel.getExercise())) {
-                redirectAttributes.addFlashAttribute("late", true);
                 redirectAttributes.addFlashAttribute("homeworkAddBindingModel", homeworkAddBindingModel);
-                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.homeworkAddBindingModel", bindingResult);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.homeworkAddBindingModel"
+                        , bindingResult);
+                redirectAttributes.addFlashAttribute("late", true);
                 return "redirect:add";
             }
 
             HomeworkServiceModel homeworkServiceModel = this.modelMapper
                     .map(homeworkAddBindingModel, HomeworkServiceModel.class);
-            homeworkServiceModel.setAuthor(httpSession.getAttribute("id").toString());
+            homeworkServiceModel.setAuthor(this.userService.getPrincipalId(principal));
             homeworkServiceModel.setAddedOn(LocalDateTime.now());
             homeworkServiceModel.setExercise(this.modelMapper
                     .map(this.exerciseService
@@ -89,14 +94,16 @@ public class HomeworkController {
 
     @GetMapping("/check")
     public String checkHomework(Model model) {
-        model.addAttribute("commentAddBindingModel", new CommentAddBindingModel());
-        model.addAttribute("homework", this.homeworkService.getHomeworkToCheck());
+        if (!model.containsAttribute("commentAddBindingModel")) {
+            model.addAttribute("commentAddBindingModel", new CommentAddBindingModel());
+            model.addAttribute("homework", this.homeworkService.getHomeworkToCheck());
+        }
         return "homework-check";
     }
 
     @PostMapping("/check")
     public String checkHomeworkConf(@Valid @ModelAttribute("commentAddBindingModel") CommentAddBindingModel commentAddBindingModel,
-                  BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpSession httpSession) {
+                  BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("commentAddBindingModel", commentAddBindingModel);
@@ -105,8 +112,8 @@ public class HomeworkController {
         }
 
         CommentServiceModel commentServiceModel = this.modelMapper.map(commentAddBindingModel, CommentServiceModel.class);
-        commentServiceModel.setAuthor(this.modelMapper.map(this.userService
-                .findUserById(httpSession.getAttribute("id").toString()), UserServiceModel.class));
+        commentServiceModel.setAuthor(this.modelMapper
+                .map(this.userService.findUserById(this.userService.getPrincipalId(principal)), UserServiceModel.class));
         commentServiceModel.setHomework(this.homeworkService.getHomeworkById(commentAddBindingModel.getHomeworkId()));
         this.commentService.addComment(commentServiceModel);
 
