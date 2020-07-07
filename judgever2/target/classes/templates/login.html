@@ -5,7 +5,7 @@
 
 <body>
 <div class="container ">
-    <nav th:include="~{fragments/menu}" class="navbar navbar-expand-xl navbar-light bg-light rounded"></nav>
+    <nav th:include="~{fragments/menuIndex}" class="navbar navbar-expand-xl navbar-light bg-light rounded"></nav>
     <div class="container mt-lg-5 border-right border-bottom bg-transparent h-100">
         <h1 class="w-100 text-light text-right">Login</h1>
     </div>
@@ -19,14 +19,8 @@
                         <form th:action="@{/users/login}" th:method="POST"
                               th:object="${userLoginBindingModel}" class="tm-login-form">
                             <div class="text-center">
-                                <small th:if="${notFound}" class="text-danger col-12 text-center">Incorrect username or
-                                    password</small>
+                                <small th:if="${param.error}" class="text-danger col-12 text-center">Invalid username or password!</small>
                                 <br/>
-                                <th:block th:each="e : ${#fields.errors()}">
-                                    <small th:text="${e}" class="text-danger col-12 text-center"></small>
-                                    <br/>
-                                </th:block>
-
                             </div>
                             <hr/>
                             <div class="input-group">
@@ -37,7 +31,8 @@
                             </div>
                             <div class="input-group mt-3">
                                 <label for="password" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Password</label>
-                                <input name="password" type="password" class="form-control validate" th:errorclass="bg-danger"
+                                <input name="password" type="password" class="form-control validate"
+                                       th:errorclass="bg-danger"
                                        id="password" placeholder="Password" required>
                             </div>
                             <div class="input-group mt-3">
