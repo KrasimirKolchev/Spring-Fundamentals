@@ -21,10 +21,10 @@ public class HomeController {
     public String home(HttpSession httpSession, Model model){
 
         if (httpSession.getAttribute("user") != null) {
-            model.addAttribute("foods", this.productService.getAllFoods());
-            model.addAttribute("drinks", this.productService.getAllDrinks());
-            model.addAttribute("others", this.productService.getAllOthers());
-            model.addAttribute("households", this.productService.getAllHouseholds());
+            model.addAttribute("foods", this.productService.getProductsByCategoryName("Food"));
+            model.addAttribute("drinks", this.productService.getProductsByCategoryName("Drink"));
+            model.addAttribute("others", this.productService.getProductsByCategoryName("Other"));
+            model.addAttribute("households", this.productService.getProductsByCategoryName("Household"));
             model.addAttribute("totalPrice", this.productService.getTotalPrice());
             return "home";
         }

@@ -33,13 +33,29 @@ public class UserController {
 
     @GetMapping("/register")
     public String userRegister(Model model) {
-        model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
+        if (!model.containsAttribute("userRegisterBindingModel")) {
+            model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
+        }
+
         return "register";
     }
 
     @PostMapping("/register")
     public String userRegisterConf(@Valid @ModelAttribute("userRegisterBindingModel")
                                            UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
+            bindingResult.rejectValue("password", "error.userRegisterBindingModel", "Passwords Doesnt match!");
+        }
+
+        if (this.userService.existByUsername(userRegisterBindingModel.getUsername())) {
+            bindingResult.rejectValue("username", "error.userRegisterBindingModel", "Username exist!");
+        }
+
+        if (this.userService.existByEmail(userRegisterBindingModel.getEmail())) {
+            bindingResult.rejectValue("email", "error.userRegisterBindingModel", "Email exist!");
+        }
+
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
@@ -48,15 +64,6 @@ public class UserController {
 
             return "redirect:register";
         } else {
-
-            if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
-                redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel"
-                        , bindingResult);
-                redirectAttributes.addFlashAttribute("passErr", true);
-
-                return "redirect:register";
-            }
 
             try {
                 this.userService.registerUser(this.modelMapper
@@ -67,7 +74,6 @@ public class UserController {
                 redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
                 redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel"
                         , bindingResult);
-                redirectAttributes.addFlashAttribute("found", true);
                 return "redirect:register";
             }
 

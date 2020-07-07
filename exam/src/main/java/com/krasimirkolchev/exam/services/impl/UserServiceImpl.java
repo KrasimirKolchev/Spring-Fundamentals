@@ -36,4 +36,14 @@ public class UserServiceImpl implements UserService {
 
         return this.modelMapper.map(this.userRepository.save(user), UserServiceModel.class);
     }
+
+    @Override
+    public boolean existByUsername(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existByEmail(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
 }

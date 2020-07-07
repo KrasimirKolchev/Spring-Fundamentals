@@ -26,10 +26,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductServiceModel addProduct(ProductServiceModel productServiceModel) {
 
-        if (this.productRepository.findByName(productServiceModel.getName()) != null) {
-            throw new EntityExistsException("Product already exist!");
-        }
-
         Product product = this.modelMapper.map(productServiceModel, Product.class);
 
         return this.modelMapper.map(this.productRepository.save(product), ProductServiceModel.class);
@@ -41,38 +37,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductServiceModel> getAllFoods() {
-        return this.productRepository.findAll()
-                .stream()
-                .filter(p -> p.getCategory().getName().equals("Food"))
-                .map(product -> this.modelMapper.map(product, ProductServiceModel.class))
-                .collect(Collectors.toList());
+    public boolean productExistByName(String name) {
+        return this.productRepository.existsByName(name);
     }
 
     @Override
-    public List<ProductServiceModel> getAllDrinks() {
-        return this.productRepository.findAll()
+    public List<ProductServiceModel> getProductsByCategoryName(String name) {
+        return this.productRepository.findProductsByCategoryName(name)
                 .stream()
-                .filter(p -> p.getCategory().getName().equals("Drink"))
-                .map(product -> this.modelMapper.map(product, ProductServiceModel.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductServiceModel> getAllOthers() {
-        return this.productRepository.findAll()
-                .stream()
-                .filter(p -> p.getCategory().getName().equals("Other"))
-                .map(product -> this.modelMapper.map(product, ProductServiceModel.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductServiceModel> getAllHouseholds() {
-        return this.productRepository.findAll()
-                .stream()
-                .filter(p -> p.getCategory().getName().equals("Household"))
-                .map(product -> this.modelMapper.map(product, ProductServiceModel.class))
+                .map(p -> this.modelMapper.map(p, ProductServiceModel.class))
                 .collect(Collectors.toList());
     }
 

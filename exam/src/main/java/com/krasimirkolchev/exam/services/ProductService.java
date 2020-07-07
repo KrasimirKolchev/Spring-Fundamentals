@@ -10,13 +10,9 @@ public interface ProductService {
 
     ProductServiceModel findProductByName(String name);
 
-    List<ProductServiceModel> getAllFoods();
+    boolean productExistByName(String name);
 
-    List<ProductServiceModel> getAllDrinks();
-
-    List<ProductServiceModel> getAllOthers();
-
-    List<ProductServiceModel> getAllHouseholds();
+    List<ProductServiceModel> getProductsByCategoryName(String name);
 
     double getTotalPrice();
 

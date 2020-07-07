@@ -7,4 +7,8 @@ public interface UserService {
     UserServiceModel findUserByUsername(String username);
 
     UserServiceModel registerUser(UserServiceModel userServiceModel);
+
+    boolean existByUsername(String username);
+
+    boolean existByEmail(String email);
 }

@@ -16,7 +16,6 @@
             </div>
             <input th:field="*{name}" th:errorclass="bg-danger" type="text" class="form-control" id="name" name="name"/>
             <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"> Name error</small>
-            <small th:if="${productFound}" class="text-danger">Product already exist!!</small>
         </div>
         <div class="form-group">
             <div class="label-holder text-white textCol d-flex justify-content-center">

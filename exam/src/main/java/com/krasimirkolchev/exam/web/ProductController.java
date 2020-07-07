@@ -30,8 +30,12 @@ public class ProductController {
 
     @GetMapping("/add")
     public String productAdd(Model model) {
-        model.addAttribute("productAddBindingModel", new ProductAddBindingModel());
-        model.addAttribute("categories", this.categoryService.getAllCategories());
+
+        if (!model.containsAttribute("productAddBindingModel")) {
+            model.addAttribute("productAddBindingModel", new ProductAddBindingModel());
+            model.addAttribute("categories", this.categoryService.getAllCategories());
+        }
+
         return "product-add";
     }
 
@@ -39,19 +43,18 @@ public class ProductController {
     public String productAddConf(@Valid @ModelAttribute("productAddBindingModel") ProductAddBindingModel productAddBindingModel,
                                  BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+        System.out.println();
+
+        if (this.productService.productExistByName(productAddBindingModel.getName())) {
+            bindingResult.rejectValue("name", "error.productAddBindingModel", "Product exist!");
+            return "redirect:add";
+        }
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("productAddBindingModel", productAddBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productAddBindingModel"
                     , bindingResult);
             return "product-add";
-        }
-
-        if (this.productService.findProductByName(productAddBindingModel.getName()) != null) {
-            redirectAttributes.addFlashAttribute("productAddBindingModel", productAddBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productAddBindingModel"
-                    , bindingResult);
-            redirectAttributes.addFlashAttribute("productFound", true);
-            return "redirect:add";
         }
 
         try {

@@ -3,12 +3,13 @@ package com.krasimirkolchev.exam.models.serviceModels;
 import com.krasimirkolchev.exam.models.entities.Category;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ProductServiceModel extends BaseServiceModel {
     private String name;
     private String description;
     private Double price;
-    private LocalDate neededBefore;
+    private LocalDateTime neededBefore;
     private Category category;
 
     public ProductServiceModel() {
@@ -38,11 +39,11 @@ public class ProductServiceModel extends BaseServiceModel {
         this.price = price;
     }
 
-    public LocalDate getNeededBefore() {
+    public LocalDateTime getNeededBefore() {
         return neededBefore;
     }
 
-    public void setNeededBefore(LocalDate neededBefore) {
+    public void setNeededBefore(LocalDateTime neededBefore) {
         this.neededBefore = neededBefore;
     }
 
