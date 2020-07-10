@@ -13,10 +13,6 @@
                         <label class="text-center text-white font-weight-bold" for="year">Enter Brand Name
                             <input type="text" class="form-control" placeholder="Brand name" name="name" id="name">
                                 <p th:if="${#fields.errors('name')}" th:errors="*{name}" class="errors alert alert-danger"></p>
-                            <!--/*@thymesVar id="errors" type="String"*/-->
-                            <th:block th:if="${Found}" >
-                                <p class="errors alert alert-danger" >Brand already exist!</p>
-                            </th:block>
                         </label>
                     </div>
                 </div>
