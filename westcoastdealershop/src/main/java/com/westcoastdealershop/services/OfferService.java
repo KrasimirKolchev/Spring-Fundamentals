@@ -10,9 +10,14 @@ import java.util.List;
 
 public interface OfferService {
     ArrayList<OfferServiceModel> getAllOffers();
+
     Offer getOfferById(String id);
+
     OfferServiceModel createOffer(OfferAddBindingModel offerAddBindingModel);
+
     Offer updateOffer(Offer offer);
+
     Offer deleteOffer(String id);
+
     long offersCount();
 }

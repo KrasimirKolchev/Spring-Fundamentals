@@ -32,8 +32,9 @@ public class BrandController {
 
     @GetMapping("/add")
     public String addBrand(Model model) {
-        model.addAttribute("brandAddBindingModel", new BrandAddBindingModel());
-
+        if (!model.containsAttribute("brandAddBindingModel")) {
+            model.addAttribute("brandAddBindingModel", new BrandAddBindingModel());
+        }
         return "brand-add";
     }
 
@@ -41,8 +42,14 @@ public class BrandController {
     public String addBrandConf(@Valid @ModelAttribute("brandAddBindingModel") BrandAddBindingModel brandAddBindingModel,
                 BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+        if (this.brandService.brandExistByName(brandAddBindingModel.getName())) {
+            bindingResult.rejectValue("name", "error.brandAddBindingModel", "Brand already exist!");
+        }
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("brandAddBindingModel", brandAddBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandAddBindingModel"
+                    , bindingResult);
             return "brand-add";
         } else {
 
@@ -52,16 +59,19 @@ public class BrandController {
                 return "home";
             } catch (EntityExistsException ex) {
                 System.out.println(ex.getMessage());
-                redirectAttributes.addFlashAttribute("Found", true);
+                redirectAttributes.addFlashAttribute("brandAddBindingModel", brandAddBindingModel);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.brandAddBindingModel"
+                        , bindingResult);
                 return "brand-add";
             }
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/brands")
     public String allBrands(Model model) {
-        model.addAttribute("brands", this.brandService.getAllBrands());
-
+        if (!model.containsAttribute("brands")) {
+            model.addAttribute("brands", this.brandService.getAllBrands());
+        }
         return "brands";
     }
 }

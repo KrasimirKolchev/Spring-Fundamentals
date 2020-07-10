@@ -50,9 +50,6 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public ModelServiceModel createModel(ModelServiceModel modelServiceModel) {
-        if (this.modelRepository.findByName(modelServiceModel.getName()) != null) {
-            throw new EntityExistsException("modelFound");
-        }
 
         Model model = this.modelMapper.map(modelServiceModel, Model.class);
         model.setCreated(new Date());
@@ -79,6 +76,11 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public long modelsCount() {
         return this.modelRepository.count();
+    }
+
+    @Override
+    public boolean modelExistByName(String name) {
+        return this.modelRepository.existsByName(name);
     }
 
     @Override

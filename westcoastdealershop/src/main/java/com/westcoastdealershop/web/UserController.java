@@ -38,37 +38,45 @@ public class UserController {
 
     @GetMapping("/register")
     public String registerUser(Model model) {
-
-        model.addAttribute("userAddBindingModel", new UserAddBindingModel());
-        model.addAttribute("selectRoles", Role.values());
-
+        if (!model.containsAttribute("userAddBindingModel")) {
+            model.addAttribute("userAddBindingModel", new UserAddBindingModel());
+            model.addAttribute("selectRoles", Role.values());
+        }
         return "auth-register";
     }
 
     @PostMapping("/register")
     public String registerUserConf(@Valid @ModelAttribute("userAddBindingModel") UserAddBindingModel userAddBindingModel,
-                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if (userAddBindingModel.getRoles().isEmpty()) {
+            bindingResult.rejectValue("roles", "error.userAddBindingModel", "Select role!");
+        }
+
+        if (this.userService.userExistByUsername(userAddBindingModel.getUsername())) {
+            bindingResult.rejectValue("username", "error.userAddBindingModel", "User already exist!");
+        }
+
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userAddBindingModel", userAddBindingModel);
-            return "auth-register";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userAddBindingModel"
+                    , bindingResult);
+            return "redirect:register";
+
         } else {
-                //try-catch
-            if (userAddBindingModel.getRoles().isEmpty()) {
-                redirectAttributes.addFlashAttribute("Empty", true);
-                redirectAttributes.addFlashAttribute("userAddBindingModel", userAddBindingModel);
-                return "auth-register";
-            } else {
+
+            try {
                 UserServiceModel userServiceModel = this.modelMapper.map(userAddBindingModel, UserServiceModel.class);
                 userServiceModel.setImageUrl("/img/user-avatar.svg");
                 UserServiceModel user = this.userService.registerUser(userServiceModel);
-
-                if(user != null) {
-                    return "redirect:/users/login";
-                } else {
-                    redirectAttributes.addFlashAttribute("userAddBindingModel", userAddBindingModel);
-                    return "auth-register";
-                }
+                return "redirect:/";
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                redirectAttributes.addFlashAttribute("userAddBindingModel", userAddBindingModel);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userAddBindingModel"
+                        , bindingResult);
+                return "redirect:register";
             }
         }
 
@@ -76,17 +84,20 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginUser(Model model) {
-        model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
-
+        if (!model.containsAttribute("userLoginBindingModel")) {
+            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+        }
         return "auth-login";
     }
 
     @PostMapping("/login")
     public String loginUserConf(@Valid @ModelAttribute("userLoginBindingModel") UserLoginBindingModel userLoginBindingModel,
-                BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpSession httpSession) {
+                                BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpSession httpSession) {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel"
+                    , bindingResult);
             return "auth-login";
         } else {
 
@@ -100,17 +111,18 @@ public class UserController {
                         .map(Enum::name)
                         .collect(Collectors.toSet()));
 
-                return "home";
+                return "redirect:/";
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
                 redirectAttributes.addFlashAttribute("NotFound", NOT_FOUND_MSG);
                 redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel"
+                        , bindingResult);
                 return "redirect:/users/login";
             }
         }
 
     }
-
 
     @GetMapping("/logout")
     public ModelAndView logout(ModelAndView modelAndView, HttpSession httpSession) {

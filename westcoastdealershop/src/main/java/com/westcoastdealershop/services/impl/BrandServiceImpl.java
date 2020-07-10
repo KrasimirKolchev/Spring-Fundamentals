@@ -29,7 +29,9 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public ArrayList<BrandServiceModel> getAllBrands() {
         return brandRepository.findAll()
-                .stream().map(b -> this.modelMapper.map(b, BrandServiceModel.class))
+                .stream()
+                .sorted(Comparator.comparing(Brand::getName))
+                .map(b -> this.modelMapper.map(b, BrandServiceModel.class))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -46,10 +48,6 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandServiceModel createBrand(BrandServiceModel brandServiceModel) {
-        if (this.brandRepository.getByName(brandServiceModel.getName()) != null) {
-            throw new EntityExistsException(String.format("Brand %s already exist!", brandServiceModel.getName()));
-        }
-
         Brand brand = this.modelMapper.map(brandServiceModel, Brand.class);
         brand.setModels(new ArrayList<>());
         brand.setCreated(new Date());
@@ -74,6 +72,11 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public long brandsCount() {
         return this.brandRepository.count();
+    }
+
+    @Override
+    public boolean brandExistByName(String name) {
+        return this.brandRepository.existsByName(name);
     }
 
     @Override

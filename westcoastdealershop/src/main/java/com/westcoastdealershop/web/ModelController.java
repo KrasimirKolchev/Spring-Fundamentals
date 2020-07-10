@@ -35,9 +35,11 @@ public class ModelController {
 
     @GetMapping("/add")
     public String addModel(Model model) {
-        model.addAttribute("modelAddBindingModel", new ModelAddBindingModel());
-        model.addAttribute("brands", this.brandService.getAllBrands());
-        model.addAttribute("categories", Category.values());
+        if (!model.containsAttribute("modelAddBindingModel")) {
+            model.addAttribute("modelAddBindingModel", new ModelAddBindingModel());
+            model.addAttribute("brands", this.brandService.getAllBrands());
+            model.addAttribute("categories", Category.values());
+        }
         return "model-add";
     }
 
@@ -45,18 +47,25 @@ public class ModelController {
     public String addModelConf(@Valid @ModelAttribute("modelAddBindingModel") ModelAddBindingModel modelAddBindingModel,
                                BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+        if (this.modelService.modelExistByName(modelAddBindingModel.getName())) {
+            bindingResult.rejectValue("name", "error.modelAddBindingModel", "Model already exist!");
+        }
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.modelAddBindingModel"
+                    , bindingResult);
             return "model-add";
         } else {
 
             try {
-                this.modelService.createModel(this.modelMapper
+                ModelServiceModel modelServiceModel = this.modelService.createModel(this.modelMapper
                         .map(modelAddBindingModel, ModelServiceModel.class));
                 return "home";
             } catch (Exception ex) {
                 redirectAttributes.addFlashAttribute("modelAddBindingModel", modelAddBindingModel);
-                redirectAttributes.addFlashAttribute("modelFound", true);
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.modelAddBindingModel"
+                        , bindingResult);
                 return "model-add";
             }
         }

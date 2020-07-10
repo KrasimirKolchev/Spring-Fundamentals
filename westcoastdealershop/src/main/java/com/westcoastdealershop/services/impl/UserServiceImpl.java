@@ -75,6 +75,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean userExistByUsername(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
+
+    @Override
     public void createUsersBatch(List<User> users) {
         users.forEach(user -> {
             user.setCreated(new Date());

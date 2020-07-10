@@ -34,12 +34,13 @@ public class OfferController {
 
     @GetMapping("/add")
     public String addOffer(Model model) {
-        model.addAttribute("offerAddBindingModel", new OfferAddBindingModel());
-        model.addAttribute("brands", this.brandService.getAllBrands());
-        model.addAttribute("engines", EngineType.values());
-        model.addAttribute("condition", VehCondition.values());
-        model.addAttribute("transmissions", TransmissionType.values());
-
+        if (!model.containsAttribute("offerAddBindingModel")) {
+            model.addAttribute("offerAddBindingModel", new OfferAddBindingModel());
+            model.addAttribute("brands", this.brandService.getAllBrands());
+            model.addAttribute("engines", EngineType.values());
+            model.addAttribute("condition", VehCondition.values());
+            model.addAttribute("transmissions", TransmissionType.values());
+        }
         return "offer-add";
     }
 
@@ -49,19 +50,22 @@ public class OfferController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
-            return "offer-add";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel"
+                    , bindingResult);
+            return "redirect:/add";
         } else {
             String sessionUserId = httpSession.getAttribute("id").toString();
             offerAddBindingModel.setSellerId(sessionUserId);
             try {
-                this.offerService.createOffer(offerAddBindingModel);
+                OfferServiceModel offerServiceModel = this.offerService.createOffer(offerAddBindingModel);
+                return "home";
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
-                return "offer-add";
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel"
+                        , bindingResult);
+                return "redirect:/add";
             }
-
-            return "home";
         }
     }
 
