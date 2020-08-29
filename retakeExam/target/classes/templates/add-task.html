@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:include="~{fragments/head}"></head>
+<body>
+<div class="page-container">
+    <header>
+        <nav th:include="~{fragments/menu}" class="navbar navbar-expand-lg "></nav>
+    </header>
+
+    <main class="content-wrap">
+        <th:block th:unless="${session.isEmpty()}">
+            <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Add Task</span></h1>
+            <hr class="hr-3 w-25 bg-white"/>
+            <form class="mx-auto w-25 bg-blur" th:object="${taskAddBindingModel}" th:method="POST" th:action="@{/tasks/add}">
+                <div class="form-group">
+                    <div class="label-holder textCol d-flex justify-content-center">
+                        <label for="name" class="h4 mb-2">Name</label>
+                    </div>
+                    <input th:field="*{name}" th:errorclass="bg-danger" type="text" class="form-control" id="name" name="name"/>
+                    <small th:each="e : ${#fields.errors('name')}" th:text="${e}" class="text-danger">Name error message</small>
+                </div>
+                <div class="form-group">
+                    <div class="label-holder textCol d-flex justify-content-center">
+                        <label for="description" class="h4 mb-2">Description</label>
+                    </div>
+                    <input th:field="*{description}" th:errorclass="bg-danger" type="text" class="form-control" id="description" name="description"/>
+                    <small th:each="e : ${#fields.errors('description')}" th:text="${e}" class="text-danger">Description error message</small>
+                </div>
+                <div class="form-group">
+                    <div class="label-holder  textCol d-flex justify-content-center">
+                        <label for="dueDate" class="h4 mb-2">Due Date</label>
+                    </div>
+                    <input th:field="*{dueDate}" th:errorclass="bg-danger" type="date" class="form-control" id="dueDate" name="dueDate"/>
+                    <small th:each="e : ${#fields.errors('dueDate')}" th:text="${e}" class="text-danger">Date error message</small>
+                </div>
+                <div class="form-group">
+                    <div class="label-holder  textCol d-flex justify-content-center">
+                        <label for="classification" class="h4 mb-2">Classification</label>
+                    </div>
+                    <select type="text" th:errorclass="bg-danger" class="form-control" id="classification" name="classification">
+                        <option value="">Select Classification</option>
+                        <option th:each="c : ${classifications}" th:value="${c.id}" th:text="${c.classificationName}">FEATURE</option>
+                    </select>
+                    <small th:each="e : ${#fields.errors('classification')}" th:text="${e}" class="text-danger">Classification error message</small>
+                </div>
+
+                <div class="button-holder d-flex justify-content-center">
+                    <button type="submit" class="button btn-warning  mb-3" value="Register">Add Task</button>
+                </div>
+            </form>
+        </th:block>
+        <th:block th:if="${session.isEmpty()}">
+            <h1 class="text-danger text-center">UNAUTHORIZED (НЕ БАРАЙ!)</h1>
+        </th:block>
+    </main>
+    <footer th:include="~{fragments/foot}" class="footer"></footer>
+
+</div>
+
+
+</body>
+</html>
