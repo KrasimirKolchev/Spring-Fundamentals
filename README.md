@@ -11,3 +11,12 @@ Spring Fundamental course: (https://softuni.bg/trainings/2844/spring-fundamental
   * [Exam](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/exam)
   * [Retake Exam](https://github.com/KrasimirKolchev/Spring-Fundamentals/tree/master/retakeExam)
   
+  
+  
+Spring Advanced course: (https://softuni.bg/trainings/3026/spring-advanced-june-2020)
+<br/>
+[SoftUni Certificate](https://softuni.bg/certificates/details/87062/2abfb6d8)
+<br/>
+
+ * [Project](https://github.com/KrasimirKolchev/photo-mag)
+  
